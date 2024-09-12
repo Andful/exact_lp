@@ -1,0 +1,9 @@
+[package]
+name = "exact_lp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+num = "0.4.*"
+regex = "1.*"
+tempfile = "3.*"
