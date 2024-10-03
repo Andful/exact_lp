@@ -5,6 +5,7 @@ use crate::expression::Expression;
 /**
  * Contraint of an integer program
  */
+#[derive(Clone)]
 pub struct Constraint<N>
 where
     N: Num + Clone,
@@ -12,6 +13,24 @@ where
     pub(crate) lhs: Expression<N>,
     pub(crate) ord: std::cmp::Ordering,
     pub(crate) rhs: Expression<N>,
+}
+
+impl<N> Constraint<N>
+where
+    N: Num + Clone + std::fmt::Display + Signed,
+{
+    pub fn to_normalized(self) -> Constraint<N> {
+        let Constraint { lhs, ord, rhs } = self;
+
+        let new_lhs = lhs - rhs;
+        let v = new_lhs.0.clone().into_iter().filter(|e| e.1.is_some()).collect::<Vec<_>>();
+        let c = new_lhs.0.into_iter().filter(|e| e.1.is_none()).fold(N::zero(), |r, (b, _)| r + b);
+        Self {
+            lhs: Expression(v),
+            ord,
+            rhs: Expression::from(-c)
+        }
+    }
 }
 
 impl<N> std::fmt::Display for Constraint<N>

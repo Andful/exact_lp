@@ -45,15 +45,15 @@ where
 
         let Some(e) = iter.next() else { return Ok(()) };
 
-        f.write_fmt(format_args!("{}", e.0))?;
+        f.write_fmt(format_args!("{:.64}", e.0))?;
         if let Some(v) = &e.1 {
             f.write_fmt(format_args!(" {}", v))?;
         }
         for e in iter {
             if e.0 == e.0.abs() {
-                f.write_fmt(format_args!(" + {}", e.0))?;
+                f.write_fmt(format_args!(" + {:.64}", e.0))?;
             } else {
-                f.write_fmt(format_args!(" - {}", e.0.abs()))?;
+                f.write_fmt(format_args!(" - {:.64}", e.0.abs()))?;
             }
             if let Some(v) = &e.1 {
                 f.write_fmt(format_args!(" {}", v))?;
